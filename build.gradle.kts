@@ -27,8 +27,8 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations.all {
-	resolutionStrategy.cacheChangingModulesFor(  0, "seconds" )
-	resolutionStrategy.cacheDynamicVersionsFor(  5, "minutes" )
+	resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+	resolutionStrategy.cacheDynamicVersionsFor(5, "minutes")
 }
 
 java {

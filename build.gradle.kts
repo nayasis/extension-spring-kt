@@ -56,6 +56,7 @@ dependencies {
 	implementation("au.com.console:kassava:2.1.0-rc.1")
 
 	implementation("org.apache.commons:commons-text:1.8")
+	implementation("org.springframework:spring-mock:2.0.8")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.2.7.RELEASE")
@@ -63,6 +64,7 @@ dependencies {
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.2.7.RELEASE")
 	"supportImplementation"("org.springframework.data:spring-data-redis:2.2.7.RELEASE")
 	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
+
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")

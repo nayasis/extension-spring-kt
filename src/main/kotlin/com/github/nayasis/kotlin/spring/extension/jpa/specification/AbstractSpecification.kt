@@ -12,7 +12,7 @@ import javax.persistence.criteria.Expression
 import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("UNCHECKED_CAST","MemberVisibilityCanBePrivate")
 abstract class AbstractSpecification<T> {
 
     abstract fun build(): Specification<T>

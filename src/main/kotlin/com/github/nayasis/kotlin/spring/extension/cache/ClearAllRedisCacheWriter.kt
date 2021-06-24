@@ -117,7 +117,7 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
     }
 
     private val isLockingCacheWriter: Boolean
-        private get() = !sleepTime.isZero && !sleepTime.isNegative
+        get() = !sleepTime.isZero && !sleepTime.isNegative
 
     private fun <T> execute(name: String, callback: Function<RedisConnection, T>): T {
         val connection = connectionFactory.connection

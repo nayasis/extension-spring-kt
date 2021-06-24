@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.reflect.KClass
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("UNCHECKED_CAST","MemberVisibilityCanBePrivate")
 @Component("httpctx")
 class HttpContext: ApplicationContextAware {
 
@@ -129,7 +129,7 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T> bean(byName: String): T? {
+        fun <T> bean(byName: String): T {
             return context.getBean(byName) as T
         }
 

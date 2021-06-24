@@ -67,15 +67,14 @@ class HttpContext: ApplicationContextAware {
             return request.getSession(create)
         }
 
-        fun headers(): Map<String, String> {
-            val header = LinkedHashMap<String,String>()
-            request.headerNames.iterator().forEach { name ->
-                name.toString().let {
-                    header[it] = header(it)
+        val headers: Map<String, String>
+            get() {
+                return LinkedHashMap<String,String>().apply {
+                    request.headerNames.iterator().forEach { name ->
+                        name.toString().let { this[it] = header(it) }
+                    }
                 }
             }
-            return headers()
-        }
 
         fun header(key: String?): String {
             return request.getHeader(key)

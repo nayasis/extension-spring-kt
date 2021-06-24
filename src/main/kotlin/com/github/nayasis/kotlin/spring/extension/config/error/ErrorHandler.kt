@@ -1,6 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.config.error
 
-import org.springframework.beans.factory.annotation.Autowired
+import com.github.nayasis.kotlin.spring.extension.exception.DomainException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
@@ -19,32 +19,64 @@ import org.springframework.web.context.request.WebRequest
  */
 @Component
 @ConditionalOnMissingBean(ErrorAttributes::class)
-class ErrorHandler {
+class ErrorHandler (
     @Value("\${server.error.include-exception:false}")
-    private val includeException = false
+    private val includeException: Boolean,
+    private val throwables: Throwables
+){
 
-    @Autowired
-    private val throwHandler: Throwables? = null
     @Bean
     fun errorAttributes(): ErrorAttributes {
-        return object: DefaultErrorAttributes() {
-            override fun getErrorAttributes(request: WebRequest, includeStackTrace: Boolean): MutableMap<String, Any> {
-                val attributes = getErrorAttributes(request, includeStackTrace)
-                val error = getError(request)
-                if (error != null) {
-                    throwHandler.logError(error)
-                    if (includeException) attributes["exception"] = error.javaClass.name
-                    if (includeStackTrace) attributes["trace"] = throwHandler.toString(error)
-                    if (error is DomainException) {
-                        val exception: DomainException = error as DomainException
-                        if (Strings.isNotEmpty(exception.errorCode())) {
-                            attributes["code"] = exception.errorCode()
-                        }
+        return object : DefaultErrorAttributes() {
+            override fun getErrorAttributes(request: WebRequest, includeStackTrace: Boolean): Map<String,Any> {
+                val attributes = super.getErrorAttributes(request, false)
+                unwrap( getError(request) )?.let{
+                    throwables.logError(it)
+                    if (includeException)  attributes["exception"] = it.javaClass.name
+                    if (includeStackTrace) attributes["trace"]     = throwables.toString(it)
+                    attributes["code"] = when (it) {
+                        is DomainException -> it.code
+                        else -> null
                     }
-                    attributes["message"] = error.message!!
+                    attributes["message"] = it.message ?: it.toString()
+                    if( it is DomainException && ! it.detail.isNullOrEmpty() ) {
+                        attributes["detail"] = it.detail
+                    }
                 }
                 return attributes
             }
         }
     }
+
+    fun toErrorAttribute( exception: Throwable? ): ErrorResponse? {
+        return unwrap(exception)?.let {
+            return ErrorResponse(
+                javaClass.name,
+                throwables.toString(it),
+                when (it) {
+                    is DomainException -> it.code
+                    else -> null
+                },
+                it.message ?: it.toString(),
+                if( it is DomainException ) it.detail else null
+            )
+        }
+    }
+
+    fun unwrap( throwable: Throwable? ): Throwable? =
+        with(throwable) {
+            when (this?.cause) {
+                is DomainException -> this.cause!!
+                else -> this
+            }
+        }
+
 }
+
+data class ErrorResponse(
+    val exception: String? = null,
+    val trace: String?     = null,
+    val code: String?      = null,
+    val message: String?   = null,
+    val detail: String?    = null,
+)

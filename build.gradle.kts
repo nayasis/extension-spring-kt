@@ -48,7 +48,7 @@ repositories {
 dependencies {
 
 	// kotlin
-	implementation( "com.github.nayasis:basica-kt:develop-SNAPSHOT" ){ isChanging = true }
+	implementation( "com.github.nayasis:basica-kt:0.1.1" )
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
@@ -64,7 +64,6 @@ dependencies {
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.2.7.RELEASE")
 	"supportImplementation"("org.springframework.data:spring-data-redis:2.2.7.RELEASE")
 	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
-
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")

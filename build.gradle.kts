@@ -49,12 +49,14 @@ repositories {
 dependencies {
 
 	// kotlin
-	implementation( "com.github.nayasis:basica-kt:0.1.1" )
+	implementation("com.github.nayasis:basica-kt:0.1.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
-	implementation( "io.github.microutils:kotlin-logging:1.8.3" )
-	implementation("au.com.console:kassava:2.1.0-rc.1")
+	implementation("io.github.microutils:kotlin-logging:1.8.3")
+	implementation("au.com.console:kassava:2.1.0")
+
+	implementation("javax.servlet:javax.servlet-api:4.0.1")
 
 	implementation("org.apache.commons:commons-text:1.8")
 	implementation("org.springframework:spring-mock:2.0.8")

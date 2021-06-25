@@ -164,6 +164,15 @@ class HttpContext: ApplicationContextAware {
             get() = environment("spring.profiles.active")
 
         /**
+         * check if given profile exists in active profiles.
+         *
+         * @param profile profile
+         * @return true if given profile exists
+         */
+        fun hasProfile(profile: String): Boolean
+            = activeProfile.contains(profile)
+
+        /**
          * transaction ID based on UUID.
          */
         val txId: String

@@ -117,8 +117,8 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T:Any> bean(byKlass: KClass<T>): T {
-            return context.getBean(byKlass.java)
+        fun <T:Any> bean(byKlass: KClass<T>, vararg arg: String): T {
+            return context.getBean(byKlass.java, *arg)
         }
 
         /**
@@ -128,8 +128,8 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T> bean(byName: String): T {
-            return context.getBean(byName) as T
+        fun <T> bean(byName: String, vararg arg: String): T {
+            return context.getBean(byName, *arg) as T
         }
 
         /**

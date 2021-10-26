@@ -3,7 +3,6 @@ package com.github.nayasis.kotlin.spring.extension.servlet
 import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
 import com.github.nayasis.kotlin.basica.core.validator.nvl
 import com.github.nayasis.kotlin.basica.thread.ThreadRoot
-import com.github.nayasis.kotlin.spring.extension.log.NetworkAddressUtil
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -38,6 +37,7 @@ class HttpContext: ApplicationContextAware {
     companion object {
 
         lateinit var context: ApplicationContext
+            private set
 
         private val servletAttributes: ServletRequestAttributes?
             get() = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?
@@ -62,10 +62,10 @@ class HttpContext: ApplicationContextAware {
         val contextRoot: String
             get() = request.contextPath
 
-        @JvmOverloads
-        fun session(create: Boolean = false): HttpSession {
-            return request.getSession(create)
-        }
+        val session: HttpSession
+            get() = request.session
+
+        fun createSession(): HttpSession = request.getSession(true)
 
         val headers: Map<String, String>
             get() {
@@ -106,9 +106,7 @@ class HttpContext: ApplicationContextAware {
          * @param fileName file name
          * @return escaped file name
          */
-        fun encodePath(fileName: String): String {
-            return UriUtils.encodePath(fileName, UTF_8)
-        }
+        fun encodePath(fileName: String): String = UriUtils.encodePath(fileName, UTF_8)
 
         /**
          * return Spring bean.
@@ -117,9 +115,7 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T:Any> bean(byKlass: KClass<T>, vararg arg: String): T {
-            return context.getBean(byKlass.java, *arg)
-        }
+        fun <T:Any> bean(byKlass: KClass<T>, vararg arg: String): T = context.getBean(byKlass.java, *arg)
 
         /**
          * return Spring bean.
@@ -128,9 +124,7 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T> bean(byName: String, vararg arg: String): T {
-            return context.getBean(byName, *arg) as T
-        }
+        fun <T> bean(byName: String, vararg arg: String): T = context.getBean(byName, *arg) as T
 
         /**
          * return SpringBoot environment bean
@@ -139,6 +133,7 @@ class HttpContext: ApplicationContextAware {
          */
         val environment: Environment
             get() = bean(Environment::class)
+
         /**
          * return configuration value in application.properties(or yml)
          *
@@ -214,7 +209,7 @@ class HttpContext: ApplicationContextAware {
         val canonicalLocalHost: String
             get() {
                 return try {
-                    NetworkAddressUtil.canonicalLocalHostName
+                    InetAddress.getLocalHost().canonicalHostName
                 } catch (e: UnknownHostException) {
                     localAddress
                 }

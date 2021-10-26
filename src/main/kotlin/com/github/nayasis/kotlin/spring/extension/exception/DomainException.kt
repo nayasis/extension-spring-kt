@@ -1,6 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.exception
 
-class DomainException: RuntimeException {
+open class DomainException: RuntimeException {
 
     var code: String = ""
     var detail: String = ""

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.io.CharacterEscapes
 import com.fasterxml.jackson.core.io.SerializedString
 import org.apache.commons.text.StringEscapeUtils
 
-class HtmlCharacterEscapes: CharacterEscapes() {
+open class HtmlCharacterEscapes: CharacterEscapes() {
 
     private val asciiEscapes = standardAsciiEscapesForJSON()
 

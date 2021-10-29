@@ -60,10 +60,10 @@ dependencies {
 	implementation("org.springframework:spring-mock:2.0.8")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-data-jpa:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.data:spring-data-redis:2.2.7.RELEASE")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.5.6")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-data-jpa:2.5.6")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.5.6")
+	"supportImplementation"("org.springframework.data:spring-data-redis:2.5.6")
 	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")

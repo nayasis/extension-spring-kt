@@ -3,6 +3,8 @@ package com.github.nayasis.kotlin.spring.extension.config.error
 import com.github.nayasis.kotlin.spring.extension.exception.DomainException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.web.error.ErrorAttributeOptions
+import org.springframework.boot.web.error.ErrorAttributeOptions.Include
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.boot.web.servlet.error.ErrorAttributes
 import org.springframework.context.annotation.Bean
@@ -28,12 +30,12 @@ class ErrorHandler (
     @Bean
     fun errorAttributes(): ErrorAttributes {
         return object : DefaultErrorAttributes() {
-            override fun getErrorAttributes(request: WebRequest, includeStackTrace: Boolean): Map<String,Any> {
-                val attributes = super.getErrorAttributes(request, false)
+            override fun getErrorAttributes(request: WebRequest, options: ErrorAttributeOptions): Map<String,Any> {
+                val attributes = super.getErrorAttributes(request, options)
                 unwrap( getError(request) )?.let{
                     throwables.logError(it)
-                    if (includeException)  attributes["exception"] = it.javaClass.name
-                    if (includeStackTrace) attributes["trace"]     = throwables.toString(it)
+                    if (options.isIncluded(Include.EXCEPTION))   attributes["exception"] = it.javaClass.name
+                    if (options.isIncluded(Include.STACK_TRACE)) attributes["trace"]     = throwables.toString(it)
                     attributes["code"] = when (it) {
                         is DomainException -> it.code
                         else -> null

@@ -3,6 +3,8 @@ package com.github.nayasis.kotlin.spring.extension.cache
 import com.github.nayasis.kotlin.basica.core.validator.isEmpty
 import mu.KotlinLogging
 import org.springframework.dao.PessimisticLockingFailureException
+import org.springframework.data.redis.cache.CacheStatistics
+import org.springframework.data.redis.cache.CacheStatisticsCollector
 import org.springframework.data.redis.cache.RedisCacheWriter
 import org.springframework.data.redis.connection.RedisConnection
 import org.springframework.data.redis.connection.RedisConnectionFactory
@@ -11,21 +13,26 @@ import org.springframework.data.redis.core.Cursor
 import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.types.Expiration
 import org.springframework.lang.Nullable
+import java.lang.Thread.sleep
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.function.Function
 
+
 private val log = KotlinLogging.logger{}
 
-class ClearAllRedisCacheWriter @JvmOverloads constructor(
+private val CACHE_NAME_ON_CLEANING: MutableSet<String> = ConcurrentHashMap.newKeySet()
+
+class RedisCacheWriterForClearAll @JvmOverloads constructor(
     private val connectionFactory: RedisConnectionFactory,
-    private val sleepTime: Duration = Duration.ZERO
+    private val sleepTime: Duration = Duration.ZERO,
+    private var cacheStatisticsCollector: CacheStatisticsCollector = CacheStatisticsCollector.none(),
 ): RedisCacheWriter {
 
-    companion object {
-        private val CACHE_NAME_ON_CLEANING: MutableSet<String> = ConcurrentHashMap.newKeySet()
+    override fun getCacheStatistics(cacheName: String): CacheStatistics {
+        return cacheStatisticsCollector.getCacheStatistics(cacheName)
     }
 
     override fun put(name: String, key: ByteArray, value: ByteArray, @Nullable ttl: Duration?) {
@@ -40,9 +47,8 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
         }
     }
 
-    override fun get(name: String, key: ByteArray): ByteArray? {
-        return execute(name) { connection -> connection[key] }
-    }
+    override fun get(name: String, key: ByteArray): ByteArray? =
+        execute(name) { connection -> connection[key] }
 
     override fun putIfAbsent(name: String, key: ByteArray, value: ByteArray, @Nullable ttl: Duration?): ByteArray? {
         return execute(name) { connection ->
@@ -94,6 +100,12 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
         }
     }
 
+    override fun clearStatistics(name: String) =
+        cacheStatisticsCollector.reset(name)
+
+    override fun withStatisticsCollector(cacheStatisticsCollector: CacheStatisticsCollector): RedisCacheWriter =
+        RedisCacheWriterForClearAll(connectionFactory,sleepTime,cacheStatisticsCollector)
+
     private fun clean(keys: MutableSet<ByteArray?>, connection: RedisConnection) {
         if (isEmpty(keys)) return
         try {
@@ -104,28 +116,22 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
         }
     }
 
-    private fun lock(name: String, connection: RedisConnection): Boolean {
-        return connection.setNX(getLockKey(name), ByteArray(0)) == true
-    }
+    private fun lock(name: String, connection: RedisConnection): Boolean =
+        connection.setNX(getLockKey(name), ByteArray(0)) == true
 
-    private fun unlock(name: String, connection: RedisConnection): Long? {
-        return connection.del(getLockKey(name))
-    }
+    private fun unlock(name: String, connection: RedisConnection): Long? =
+        connection.del(getLockKey(name))
 
-    private fun isLocked(name: String, connection: RedisConnection): Boolean {
-        return connection.exists(getLockKey(name)) == true
-    }
+    private fun isLocked(name: String, connection: RedisConnection): Boolean =
+        connection.exists(getLockKey(name)) == true
 
     private val isLockingCacheWriter: Boolean
         get() = !sleepTime.isZero && !sleepTime.isNegative
 
     private fun <T> execute(name: String, callback: Function<RedisConnection, T>): T {
-        val connection = connectionFactory.connection
-        return try {
-            waitUnlocked(name, connection)
-            callback.apply(connection)
-        } finally {
-            connection.close()
+        return connectionFactory.connection.use {
+            waitUnlocked(name, it)
+            callback.apply(it)
         }
     }
 
@@ -133,7 +139,7 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
         if (!isLockingCacheWriter) return
         try {
             while (isLocked(name, connection)) {
-                Thread.sleep(sleepTime.toMillis())
+                sleep(sleepTime.toMillis())
             }
         } catch (ex: InterruptedException) {
             // Re-interrupt current thread, to allow other participants to react.
@@ -142,12 +148,10 @@ class ClearAllRedisCacheWriter @JvmOverloads constructor(
         }
     }
 
-    private fun shouldExpireWithin(ttl: Duration?): Boolean {
-        return ttl != null && !ttl.isZero && !ttl.isNegative
-    }
+    private fun shouldExpireWithin(ttl: Duration?): Boolean =
+        ttl != null && !ttl.isZero && !ttl.isNegative
 
-    private fun getLockKey(name: String): ByteArray {
-        return "$name~lock".toByteArray(StandardCharsets.UTF_8)
-    }
+    private fun getLockKey(name: String): ByteArray =
+        "$name~lock".toByteArray(StandardCharsets.UTF_8)
 
 }

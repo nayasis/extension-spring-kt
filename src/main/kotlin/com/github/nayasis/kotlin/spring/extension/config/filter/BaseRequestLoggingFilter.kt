@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 
 private val log = KotlinLogging.logger {}
 
-open class RequestLoggingFilter: OncePerRequestFilter() {
+open class BaseRequestLoggingFilter: OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val requestWrapper = CachedServletRequest(request)

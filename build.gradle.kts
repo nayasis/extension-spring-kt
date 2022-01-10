@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	`maven`
-	`maven-publish`
 	kotlin("jvm") version "1.4.32"
 	kotlin("plugin.allopen") version "1.4.20"
 	kotlin("plugin.noarg") version "1.4.20"
@@ -48,8 +47,8 @@ repositories {
 
 dependencies {
 
-//	implementation("com.github.nayasis:basica-kt:0.1.2")
-	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
+	implementation("com.github.nayasis:basica-kt:0.1.7")
+//	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
 //	implementation("com.github.nayasis:basica-kt:0.1.3-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -58,6 +57,7 @@ dependencies {
 	implementation("javax.servlet:javax.servlet-api:4.0.1")
 	implementation("org.apache.commons:commons-text:1.8")
 	implementation("org.springframework:spring-mock:2.0.8")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.+")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.5.6")

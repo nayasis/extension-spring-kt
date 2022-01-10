@@ -22,8 +22,6 @@ import org.springframework.web.context.request.WebRequest
 @Component
 @ConditionalOnMissingBean(ErrorAttributes::class)
 class ErrorHandler (
-    @Value("\${server.error.include-exception:false}")
-    private val includeException: Boolean,
     private val throwables: Throwables
 ){
 
@@ -33,7 +31,6 @@ class ErrorHandler (
             override fun getErrorAttributes(request: WebRequest, options: ErrorAttributeOptions): Map<String,Any> {
                 val attributes = super.getErrorAttributes(request, options)
                 unwrap( getError(request) )?.let{
-                    throwables.logError(it)
                     if (options.isIncluded(Include.EXCEPTION))   attributes["exception"] = it.javaClass.name
                     if (options.isIncluded(Include.STACK_TRACE)) attributes["trace"]     = throwables.toString(it)
                     attributes["code"] = when (it) {

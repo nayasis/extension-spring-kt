@@ -55,7 +55,7 @@ class SortBuilder {
     }
 
     fun toDirection(direction: String?): Sort.Direction {
-        return when (direction?.trim()?.toLowerCase()) {
+        return when (direction?.trim()?.lowercase()) {
             "desc" -> Sort.Direction.DESC
             "asc"  -> Sort.Direction.ASC
             else   -> Sort.DEFAULT_DIRECTION

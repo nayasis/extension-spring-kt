@@ -57,7 +57,7 @@ class HttpContext: ApplicationContextAware {
         }
 
         val contentType: String
-            get() = request.contentType.toLowerCase()
+            get() = request.contentType.lowercase()
 
         val contextRoot: String
             get() = request.contextPath

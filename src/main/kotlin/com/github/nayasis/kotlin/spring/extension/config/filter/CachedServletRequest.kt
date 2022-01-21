@@ -32,7 +32,7 @@ open class CachedServletRequest(request: HttpServletRequest): HttpServletRequest
     override fun getReader(): BufferedReader = BufferedReader(InputStreamReader(inputStream))
 
     fun hasContentType(vararg type: MediaType): Boolean {
-        val contentType = contentType.also { if(it.isNullOrEmpty()) return false }.toLowerCase()
+        val contentType = contentType.also { if(it.isNullOrEmpty()) return false }.lowercase()
         return type.firstOrNull{contentType.contains(it.type)} != null
     }
 

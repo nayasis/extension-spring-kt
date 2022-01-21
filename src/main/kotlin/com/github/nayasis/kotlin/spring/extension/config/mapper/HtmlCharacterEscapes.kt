@@ -10,13 +10,13 @@ open class HtmlCharacterEscapes: CharacterEscapes() {
     private val asciiEscapes = standardAsciiEscapesForJSON()
 
     private fun addXssCharacters() {
-        asciiEscapes['<'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['>'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['\"'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['('.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes[')'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['#'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['\''.toInt()] = ESCAPE_CUSTOM
+        asciiEscapes[ '<'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '>'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '"'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '('.code] = ESCAPE_CUSTOM
+        asciiEscapes[ ')'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '#'.code] = ESCAPE_CUSTOM
+        asciiEscapes['\''.code] = ESCAPE_CUSTOM
     }
 
     override fun getEscapeCodesForAscii(): IntArray {

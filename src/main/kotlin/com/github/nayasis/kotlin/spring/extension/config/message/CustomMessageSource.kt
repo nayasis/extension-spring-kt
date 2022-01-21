@@ -17,7 +17,7 @@ open class CustomMessageSource: MessageSource {
     }
 
     override fun getMessage(code: String, args: Array<Any>?, locale: Locale): String {
-        return getMessage(code, args, null, locale)!!
+        return getMessage(code, args, null, locale)
     }
 
     override fun getMessage(resolvable: MessageSourceResolvable, locale: Locale): String {

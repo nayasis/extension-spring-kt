@@ -5,18 +5,18 @@ import com.fasterxml.jackson.core.io.CharacterEscapes
 import com.fasterxml.jackson.core.io.SerializedString
 import org.apache.commons.text.StringEscapeUtils
 
-class HtmlCharacterEscapes: CharacterEscapes() {
+open class HtmlCharacterEscapes: CharacterEscapes() {
 
     private val asciiEscapes = standardAsciiEscapesForJSON()
 
     private fun addXssCharacters() {
-        asciiEscapes['<'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['>'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['\"'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['('.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes[')'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['#'.toInt()] = ESCAPE_CUSTOM
-        asciiEscapes['\''.toInt()] = ESCAPE_CUSTOM
+        asciiEscapes[ '<'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '>'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '"'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '('.code] = ESCAPE_CUSTOM
+        asciiEscapes[ ')'.code] = ESCAPE_CUSTOM
+        asciiEscapes[ '#'.code] = ESCAPE_CUSTOM
+        asciiEscapes['\''.code] = ESCAPE_CUSTOM
     }
 
     override fun getEscapeCodesForAscii(): IntArray {

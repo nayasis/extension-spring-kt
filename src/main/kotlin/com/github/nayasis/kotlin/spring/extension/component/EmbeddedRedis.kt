@@ -27,7 +27,7 @@ class EmbeddedRedis {
 
     @PostConstruct
     fun startRedis() {
-        if (!enable!!) {
+        if (!enable) {
             log.debug{"DO NOT start local redis server because [spring.redis.embedded.enable] in \"application.properties(or yml)\" is false."}
             return
         }
@@ -61,13 +61,11 @@ class EmbeddedRedis {
 
     @PreDestroy
     fun stopRedis() {
-        if (redisServer != null) {
-            log.debug{"stop local Redis server"}
-            try {
-                redisServer.stop()
-            } catch (e: EmbeddedRedisException) {
-                log.error(e.message, e)
-            }
+        log.debug{"stop local Redis server"}
+        try {
+            redisServer.stop()
+        } catch (e: EmbeddedRedisException) {
+            log.error(e.message, e)
         }
     }
 }

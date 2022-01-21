@@ -2,10 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	`maven`
-	kotlin("jvm") version "1.4.32"
-	kotlin("plugin.allopen") version "1.4.20"
-	kotlin("plugin.noarg") version "1.4.20"
-	kotlin("plugin.serialization") version "1.4.32"
+	kotlin("jvm") version "1.6.10"
+	kotlin("plugin.allopen") version "1.6.10"
+	kotlin("plugin.noarg") version "1.6.10"
+	kotlin("plugin.serialization") version "1.6.10"
 }
 
 allOpen {
@@ -27,8 +27,8 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations.all {
-	resolutionStrategy.cacheChangingModulesFor(  0, "seconds" )
-	resolutionStrategy.cacheDynamicVersionsFor(  5, "minutes" )
+	resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+	resolutionStrategy.cacheDynamicVersionsFor(5, "minutes")
 }
 
 java {
@@ -47,21 +47,23 @@ repositories {
 
 dependencies {
 
-	// kotlin
-	implementation( "com.github.nayasis:basica-kt:develop-SNAPSHOT" ){ isChanging = true }
+	implementation("com.github.nayasis:basica-kt:0.1.8")
+//	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
+//	implementation("com.github.nayasis:basica-kt:0.1.3-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
-	implementation( "io.github.microutils:kotlin-logging:1.8.3" )
-	implementation("au.com.console:kassava:2.1.0-rc.1")
-
+	implementation("io.github.microutils:kotlin-logging:1.8.3")
+	implementation("au.com.console:kassava:2.1.0")
+	implementation("javax.servlet:javax.servlet-api:4.0.1")
 	implementation("org.apache.commons:commons-text:1.8")
+	implementation("org.springframework:spring-mock:2.0.8")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.+")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-data-jpa:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.2.7.RELEASE")
-	"supportImplementation"("org.springframework.data:spring-data-redis:2.2.7.RELEASE")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.5.6")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-data-jpa:2.5.6")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.5.6")
+	"supportImplementation"("org.springframework.data:spring-data-redis:2.5.6")
 	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")

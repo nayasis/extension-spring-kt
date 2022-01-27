@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.1.8")
+	implementation("com.github.nayasis:basica-kt:0.1.9")
 //	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
 //	implementation("com.github.nayasis:basica-kt:0.1.3-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

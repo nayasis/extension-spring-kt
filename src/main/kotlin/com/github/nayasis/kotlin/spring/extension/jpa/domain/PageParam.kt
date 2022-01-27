@@ -10,7 +10,7 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaField
 
 @NoArg
-class PageParam(
+open class PageParam(
     var page: Int     = 0,
     var size: Int     = 10,
     var sort: String? = null,

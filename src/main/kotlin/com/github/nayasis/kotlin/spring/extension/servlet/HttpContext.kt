@@ -37,7 +37,6 @@ class HttpContext: ApplicationContextAware {
     companion object {
 
         lateinit var context: ApplicationContext
-            private set
 
         private val servletAttributes: ServletRequestAttributes?
             get() = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?

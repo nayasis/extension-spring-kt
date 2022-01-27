@@ -10,16 +10,17 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaField
 
 @NoArg
-data class PageParam(
-    val page: Int     = 0,
-    val size: Int     = 10,
+class PageParam(
+    var page: Int     = 0,
+    var size: Int     = 10,
     var sort: String? = null,
 ) {
 
     @JvmOverloads
     fun toPageable(defaultSort: String? = null, columnMapper: ((field: String) -> String?)? = null): Pageable {
         val expression = sort ?: defaultSort
-        val sortable   = expression?.let { SortBuilder().toSort(it,columnMapper) } ?: Sort.unsorted()
+        val sortable   = if( expression.isNullOrEmpty() )  Sort.unsorted() else
+            SortBuilder().toSort(expression,columnMapper)
         return PageRequest.of(page, size, sortable )
     }
 

@@ -14,10 +14,8 @@ import org.springframework.web.context.request.WebRequest
 /**
  * Error handler
  *
- * (it used only reference. ErrorAttributes must be declared in main project.)
+ * it is only reference. ErrorAttributes must be declared in main project.
  *
- * @author nayasis@gmail.com
- * @since  2016-03-04
  */
 @Component
 @ConditionalOnMissingBean(ErrorAttributes::class)

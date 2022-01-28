@@ -49,14 +49,13 @@ dependencies {
 
 	implementation("com.github.nayasis:basica-kt:0.1.9")
 //	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
-//	implementation("com.github.nayasis:basica-kt:0.1.3-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.github.microutils:kotlin-logging:1.8.3")
 	implementation("au.com.console:kassava:2.1.0")
 	implementation("javax.servlet:javax.servlet-api:4.0.1")
 	implementation("org.apache.commons:commons-text:1.8")
-	implementation("org.springframework:spring-mock:2.0.8")
+//	implementation("org.springframework:spring-mock:2.0.8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.+")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
@@ -64,6 +63,7 @@ dependencies {
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-data-jpa:2.5.6")
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.5.6")
 	"supportImplementation"("org.springframework.data:spring-data-redis:2.5.6")
+	"supportImplementation"("org.springframework.boot:spring-boot-starter-test:2.5.6")
 	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")

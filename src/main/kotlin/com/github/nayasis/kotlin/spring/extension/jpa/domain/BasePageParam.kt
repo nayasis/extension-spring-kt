@@ -16,7 +16,6 @@ open class BasePageParam(
     var sort: String? = null,
 ) {
 
-    @JvmOverloads
     fun toPageable(defaultSort: String? = null, columnMapper: ((field: String) -> String?)? = null): Pageable {
         val expression = sort ?: defaultSort
         val sortable   = if( expression.isNullOrEmpty() )  Sort.unsorted() else

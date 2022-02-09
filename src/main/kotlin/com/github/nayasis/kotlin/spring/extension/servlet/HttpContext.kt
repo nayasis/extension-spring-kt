@@ -1,6 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
 import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extention.isEmpty
 import com.github.nayasis.kotlin.basica.core.validator.nvl
 import com.github.nayasis.kotlin.basica.thread.ThreadRoot
 import org.springframework.beans.BeansException
@@ -37,7 +38,6 @@ class HttpContext: ApplicationContextAware {
     companion object {
 
         lateinit var context: ApplicationContext
-            private set
 
         private val servletAttributes: ServletRequestAttributes?
             get() = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes?
@@ -115,7 +115,12 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T:Any> bean(byKlass: KClass<T>, vararg arg: String): T = context.getBean(byKlass.java, *arg)
+        fun <T:Any> bean(byKlass: KClass<T>, vararg arg: String): T {
+            return when {
+                arg.isEmpty() -> context.getBean(byKlass.java)
+                else -> context.getBean(byKlass.java, *arg)
+            }
+        }
 
         /**
          * return Spring bean.
@@ -124,7 +129,12 @@ class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
-        fun <T> bean(byName: String, vararg arg: String): T = context.getBean(byName, *arg) as T
+        fun <T> bean(byName: String, vararg arg: String): T {
+            return when {
+                arg.isEmpty() -> context.getBean(byName)
+                else -> context.getBean(byName, *arg)
+            } as T
+        }
 
         /**
          * return SpringBoot environment bean
@@ -134,13 +144,6 @@ class HttpContext: ApplicationContextAware {
         val environment: Environment
             get() = bean(Environment::class)
 
-        /**
-         * return configuration value in application.properties(or yml)
-         *
-         * @param key           configuration key
-         * @param defaultValue  default value
-         * @return configuration value
-         */
         /**
          * return configuration value in application.properties(or yml)
          *

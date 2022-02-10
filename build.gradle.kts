@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.1.9")
+	implementation("com.github.nayasis:basica-kt:0.1.10")
 //	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -55,8 +55,8 @@ dependencies {
 	implementation("au.com.console:kassava:2.1.0")
 	implementation("javax.servlet:javax.servlet-api:4.0.1")
 	implementation("org.apache.commons:commons-text:1.8")
-//	implementation("org.springframework:spring-mock:2.0.8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.+")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.2")
 
 	"supportImplementation"("it.ozimov:embedded-redis:0.7.2")
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-web:2.5.6")

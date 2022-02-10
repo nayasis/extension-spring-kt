@@ -17,7 +17,6 @@ class ObjectMapperBuilderTest {
         val simple = Simple("nayasis", "1999-01-01".toLocalDateTime())
 
         val mapper = ObjectMapperBuilder().fieldMapper().apply {
-            registerModule(KotlinModule.Builder().build())
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
 

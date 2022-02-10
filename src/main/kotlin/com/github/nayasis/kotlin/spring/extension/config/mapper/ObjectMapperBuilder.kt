@@ -7,9 +7,15 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.addDeserializer
+import com.fasterxml.jackson.module.kotlin.addSerializer
+import com.github.nayasis.kotlin.basica.reflection.serializer.DateDeserializer
+import com.github.nayasis.kotlin.basica.reflection.serializer.DateSerializer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import java.util.*
 
 class ObjectMapperBuilder {
 
@@ -31,8 +37,13 @@ class ObjectMapperBuilder {
             .featuresToEnable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
             .visibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-            .modules(JavaTimeModule())
-            .modules(KotlinModule())
+            .modules(
+                KotlinModule(),
+                JavaTimeModule(),
+                SimpleModule(javaClass.simpleName).apply {
+                    addSerializer(Date::class, DateSerializer())
+                    addDeserializer(Date::class, DateDeserializer())
+                })
             .build()
     }
 }

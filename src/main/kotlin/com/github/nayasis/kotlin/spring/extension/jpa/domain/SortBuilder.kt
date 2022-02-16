@@ -48,8 +48,8 @@ class SortBuilder {
     @JvmOverloads
     fun toOrder(expression: String?, columnMapper: ((field: String) -> String?)? = null ): Sort.Order? {
         val words     = nvl(expression).split(",")
-        val field     = words.first().trim()
-        val column    = columnMapper?.let{it(field)} ?: field
+        val field     = words.first().trim().also { if(it.isEmpty()) return null }
+        val column    = if( columnMapper == null ) field else columnMapper(field) ?: return null
         val direction = toDirection(words.getOrNull(1))
         return if (column.isNullOrEmpty()) null else Sort.Order(direction, column)
     }

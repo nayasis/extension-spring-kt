@@ -1,10 +1,14 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.specification
 
-// copyright : https://github.com/consoleau/kotlin-jpa-specification-dsl
-
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.*
 import kotlin.reflect.KProperty1
+
+/**
+ * Spring Data JPA Specification DSL
+ *
+ * origin from : [github](https://github.com/consoleau/kotlin-jpa-specification-dsl)
+ */
 
 fun <Z,T,R> From<Z, T>.join(prop: KProperty1<T,R?>): Join<T,R> = this.join<T,R>(prop.name)
 

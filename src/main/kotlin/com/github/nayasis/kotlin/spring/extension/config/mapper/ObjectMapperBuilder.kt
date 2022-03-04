@@ -4,17 +4,21 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.addDeserializer
 import com.fasterxml.jackson.module.kotlin.addSerializer
+import com.github.nayasis.kotlin.basica.core.localdate.toLocalDateTime
 import com.github.nayasis.kotlin.basica.reflection.serializer.DateDeserializer
 import com.github.nayasis.kotlin.basica.reflection.serializer.DateSerializer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import java.time.LocalDateTime
 import java.util.*
 
 class ObjectMapperBuilder {
@@ -43,7 +47,18 @@ class ObjectMapperBuilder {
                 SimpleModule(javaClass.simpleName).apply {
                     addSerializer(Date::class, DateSerializer())
                     addDeserializer(Date::class, DateDeserializer())
+                    addDeserializer(LocalDateTime::class,CustomLocalDateTimeDeserializer())
                 })
             .build()
+    }
+}
+
+class CustomLocalDateTimeDeserializer: LocalDateTimeDeserializer() {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): LocalDateTime {
+        return try {
+            super.deserialize(p, ctxt)
+        } catch (e: Exception) {
+            p.text.toLocalDateTime()
+        }
     }
 }

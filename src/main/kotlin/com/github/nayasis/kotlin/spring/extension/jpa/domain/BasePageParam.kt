@@ -35,7 +35,7 @@ open class BasePageParam(
  * get column name on JPA entity class
  *
  * @param entity JPA entity class
- * @return { javaFieldName : columnName }
+ * @return field names
  */
 fun getFieldNames(entity: KClass<*>): Set<String> {
     return entity.declaredMemberProperties.mapNotNull { it.javaField?.name }.toSet()

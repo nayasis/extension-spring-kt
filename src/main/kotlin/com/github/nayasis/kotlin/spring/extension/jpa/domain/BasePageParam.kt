@@ -1,13 +1,15 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.domain
 
 import com.github.nayasis.kotlin.basica.annotation.NoArg
+import com.github.nayasis.kotlin.basica.core.extention.then
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import javax.persistence.Column
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaField
+
+private val cache = mutableMapOf<KClass<*>,Set<String>>()
 
 @NoArg
 open class BasePageParam(
@@ -15,6 +17,12 @@ open class BasePageParam(
     var size: Int     = 10,
     var sort: String? = null,
 ) {
+
+    fun toPageable(defaultSort: String, entity: KClass<*>): Pageable {
+        if( ! cache.containsKey(entity) )
+            cache[entity] = getFieldNames(entity)
+        return toPageable(defaultSort) { cache[entity]!!.contains(it).then(it) }
+    }
 
     fun toPageable(defaultSort: String? = null, columnMapper: ((field: String) -> String?)? = null): Pageable {
         val expression = sort ?: defaultSort
@@ -28,14 +36,9 @@ open class BasePageParam(
 /**
  * get column name on JPA entity class
  *
- * @param entityClass JPA entity class
+ * @param entity JPA entity class
  * @return { javaFieldName : columnName }
  */
-fun getColumnNames(entityClass: KClass<*>): Map<String,String> {
-    return entityClass.declaredMemberProperties.mapNotNull { it.javaField }
-        .associate {
-            val field = it.name
-            val column = it.getAnnotation(Column::class.java)?.name ?: field
-            field to column
-        }
+fun getFieldNames(entity: KClass<*>): Set<String> {
+    return entity.declaredMemberProperties.mapNotNull { it.javaField?.name }.toSet()
 }

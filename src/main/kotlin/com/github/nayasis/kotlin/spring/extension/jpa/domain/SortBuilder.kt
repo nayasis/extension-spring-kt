@@ -33,7 +33,6 @@ class SortBuilder {
      *  ex. { field -> COLUMNS.get(field) }
      * @return query sorting expression
      */
-    @JvmOverloads
     fun toSort(expression: String?, entity: KClass<*>): Sort {
         return Sort.by(toOrders(expression, entity))
     }
@@ -61,7 +60,6 @@ class SortBuilder {
      *  ex. { field -> COLUMNS.get(field) }
      * @return order rules
      */
-    @JvmOverloads
     fun toOrders(expression: String?, entity: KClass<*>): List<Sort.Order> {
         return nvl(expression).split("^").mapNotNull { toOrder(it,entity) }
     }
@@ -97,7 +95,6 @@ class SortBuilder {
      *  ex. { field -> COLUMNS.get(field) }
      * @return order
      */
-    @JvmOverloads
     fun toOrder(expression: String?, entity: KClass<*>): Sort.Order? {
         if( ! cache.containsKey(entity) )
             cache[entity] = getFieldNames(entity)

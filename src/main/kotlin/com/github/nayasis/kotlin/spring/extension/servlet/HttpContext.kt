@@ -1,6 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
 import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extention.ifNull
 import com.github.nayasis.kotlin.basica.core.extention.isEmpty
 import com.github.nayasis.kotlin.basica.core.validator.nvl
 import com.github.nayasis.kotlin.basica.thread.ThreadRoot
@@ -49,18 +50,16 @@ class HttpContext: ApplicationContextAware {
             get() = servletAttributes?.response ?: MockHttpServletResponse()
 
         fun hasContentType(vararg type: MediaType): Boolean {
-            contentType.let {
-                for (t in type)
-                    if (it.contains(t.type)) return true
-                return false
-            }
+            for (t in type)
+                if (contentType.contains(t.type)) return true
+            return false
         }
 
         val contentType: String
-            get() = request.contentType.lowercase()
+            get() = request.contentType?.lowercase() ?: ""
 
         val contextRoot: String
-            get() = request.contextPath
+            get() = request.contextPath ?: ""
 
         val session: HttpSession
             get() = request.session
@@ -77,13 +76,13 @@ class HttpContext: ApplicationContextAware {
             }
 
         fun header(key: String?): String {
-            return request.getHeader(key)
+            return request.getHeader(key) ?: ""
         }
 
         val userAgent: String
             get() = header("user-agent")
 
-        val parameters: Map<String, String>
+        val parameters: Map<String,String>
             get() {
                 return LinkedHashMap<String,String>().apply {
                     request.parameterMap.forEach { (key, value) -> this["$key"] = nvl(value) }
@@ -174,13 +173,13 @@ class HttpContext: ApplicationContextAware {
          * transaction ID based on UUID.
          */
         val txId: String
-            get() = ThreadRoot.key
+            get() = ThreadRoot.key ?: ""
 
         /**
          * IP of remote client
          */
         val remoteAddress: String
-            get() = request.remoteAddr.replace(":", ".")
+            get() = request.remoteAddr?.replace(":", ".") ?: ""
 
         /**
          * IP of local host.
@@ -188,7 +187,7 @@ class HttpContext: ApplicationContextAware {
         val localhostIp: String
             get() {
                 return try {
-                    InetAddress.getLocalHost().hostAddress.replace(":",".")
+                    InetAddress.getLocalHost()?.hostAddress?.replace(":",".") ?: ""
                 } catch (e: UnknownHostException) {
                     localAddress
                 }
@@ -200,7 +199,7 @@ class HttpContext: ApplicationContextAware {
         val localhost: String
             get() {
                 return try {
-                    InetAddress.getLocalHost().hostName
+                    InetAddress.getLocalHost()?.hostName ?: ""
                 } catch (e: UnknownHostException) {
                     localAddress
                 }

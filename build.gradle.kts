@@ -41,13 +41,12 @@ java {
 repositories {
 	mavenLocal()
 	mavenCentral()
-	jcenter()
 	maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.2.6")
+	implementation("com.github.nayasis:basica-kt:0.2.8")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.github.microutils:kotlin-logging:1.8.3")

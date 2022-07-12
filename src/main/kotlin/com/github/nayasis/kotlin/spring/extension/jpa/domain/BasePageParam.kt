@@ -1,6 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.domain
 
 import com.github.nayasis.kotlin.basica.annotation.NoArg
+import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -16,15 +17,15 @@ open class BasePageParam(
 ) {
 
     fun toPageable(defaultSort: String, entity: KClass<*>): Pageable {
-        val expression = sort ?: defaultSort
-        val sortable   = if( expression.isNullOrEmpty() )  Sort.unsorted() else
+        val expression = sort.ifEmpty { defaultSort }
+        val sortable   = if(expression.isNullOrEmpty()) Sort.unsorted() else
             SortBuilder().toSort(expression,entity)
         return PageRequest.of(page, size, sortable )
     }
 
     fun toPageable(defaultSort: String? = null, columnMapper: ((field: String) -> String?)? = null): Pageable {
-        val expression = sort ?: defaultSort
-        val sortable   = if( expression.isNullOrEmpty() )  Sort.unsorted() else
+        val expression = sort.ifEmpty { defaultSort }
+        val sortable   = if(expression.isNullOrEmpty()) Sort.unsorted() else
             SortBuilder().toSort(expression,columnMapper)
         return PageRequest.of(page, size, sortable )
     }

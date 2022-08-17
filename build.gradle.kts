@@ -47,7 +47,8 @@ repositories {
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.2.8")
+//	implementation("com.github.nayasis:basica-kt:0.2.8")
+	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT") { isChanging = true }
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.github.microutils:kotlin-logging:1.8.3")

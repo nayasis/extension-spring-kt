@@ -20,7 +20,7 @@ open class BasePageParam(
         val expression = sort.ifEmpty { defaultSort }
         val sortable   = if(expression.isNullOrEmpty()) Sort.unsorted() else
             SortBuilder().toSort(expression,entity)
-        return PageRequest.of(page, size, sortable )
+        return PageRequest.of(page, size, sortable)
     }
 
     fun toPageable(defaultSort: String? = null, columnMapper: ((field: String) -> String?)? = null): Pageable {

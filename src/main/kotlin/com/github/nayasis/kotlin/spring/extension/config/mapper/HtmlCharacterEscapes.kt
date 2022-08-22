@@ -24,6 +24,7 @@ open class HtmlCharacterEscapes: CharacterEscapes() {
     }
 
     override fun getEscapeSequence(ch: Int): SerializableString {
+        @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
         return SerializedString(
             StringEscapeUtils.escapeHtml4(Character.toString(ch.toChar()))
         )

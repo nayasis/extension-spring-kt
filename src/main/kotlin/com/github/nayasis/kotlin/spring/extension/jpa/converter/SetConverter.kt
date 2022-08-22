@@ -6,13 +6,10 @@ import javax.persistence.Converter
 
 @Converter(autoApply = true)
 class SetConverter<T>: AttributeConverter<Set<T>,String> {
-
     override fun convertToDatabaseColumn(items: Set<T>?): String {
         return Reflector.toJson(items)
     }
-
     override fun convertToEntityAttribute(string: String?): Set<T> {
         return Reflector.toObject(string)
     }
-
 }

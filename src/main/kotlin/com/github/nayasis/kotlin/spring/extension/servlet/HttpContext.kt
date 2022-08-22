@@ -173,7 +173,7 @@ class HttpContext: ApplicationContextAware {
          * transaction ID based on UUID.
          */
         val txId: String
-            get() = ThreadRoot.key ?: ""
+            get() = ThreadRoot.key
 
         /**
          * IP of remote client

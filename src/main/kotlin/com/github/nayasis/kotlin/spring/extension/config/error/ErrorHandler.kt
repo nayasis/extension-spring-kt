@@ -1,11 +1,11 @@
 package com.github.nayasis.kotlin.spring.extension.config.error
 
-import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extention.ifNotEmpty
 import com.github.nayasis.kotlin.spring.extension.exception.DomainException
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.error.ErrorAttributeOptions
-import org.springframework.boot.web.error.ErrorAttributeOptions.Include
-import org.springframework.boot.web.error.ErrorAttributeOptions.Include.*
+import org.springframework.boot.web.error.ErrorAttributeOptions.Include.EXCEPTION
+import org.springframework.boot.web.error.ErrorAttributeOptions.Include.STACK_TRACE
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.boot.web.servlet.error.ErrorAttributes
 import org.springframework.context.annotation.Bean
@@ -34,8 +34,8 @@ class ErrorHandler (
                     if (options.isIncluded(STACK_TRACE)) attributes["trace"]     = throwables.toString(throwable)
                     attributes["message"] = throwable.message ?: throwable.toString()
                     if( throwable is DomainException ) {
-                        attributes["code"]   = throwable.code.ifEmpty { null }
-                        attributes["detail"] = throwable.detail.ifEmpty { null }
+                        throwable.code?.ifNotEmpty { attributes["code"] = it }
+                        throwable.detail?.ifNotEmpty { attributes["detail"] = it }
                     }
                 }
                 return attributes
@@ -43,17 +43,17 @@ class ErrorHandler (
         }
     }
 
-    fun toErrorAttribute( exception: Throwable? ): ErrorResponse? {
+    fun toErrorAttribute(exception: Throwable?): ErrorResponse? {
         return unwrap(exception)?.let {
             return ErrorResponse(
-                javaClass.name,
-                throwables.toString(it),
-                when (it) {
+                exception = javaClass.name,
+                trace = throwables.toString(it),
+                code = when (it) {
                     is DomainException -> it.code
                     else -> null
                 },
-                it.message ?: it.toString(),
-                if( it is DomainException ) it.detail else null
+                message = it.message ?: it.toString(),
+                detail = if( it is DomainException ) it.detail else null
             )
         }
     }

@@ -22,7 +22,7 @@ open class CustomMessageSource: MessageSource {
 
     override fun getMessage(resolvable: MessageSourceResolvable, locale: Locale): String {
         val codes = resolvable.codes
-        val args: Array<Any> = resolvable.arguments.ifEmpty{EMPTY_ARG}
+        val args  = resolvable.arguments.ifEmpty{EMPTY_ARG}
         return Messages[locale, codes!![0]].bind(*args)
     }
 

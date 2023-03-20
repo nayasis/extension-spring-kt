@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	`maven`
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.allopen") version "1.6.10"
-	kotlin("plugin.noarg") version "1.6.10"
-	kotlin("plugin.serialization") version "1.6.10"
+	java
+	`maven-publish`
+	kotlin("jvm") version "1.8.10"
+	kotlin("plugin.allopen") version "1.8.10"
+	kotlin("plugin.noarg") version "1.8.10"
+	kotlin("plugin.serialization") version "1.8.10"
 }
 
 allOpen {
@@ -32,10 +33,11 @@ configurations.all {
 }
 
 java {
-	// for 'supportImplementation'
 	registerFeature("support") {
 		usingSourceSet(sourceSets["main"])
 	}
+	withJavadocJar()
+	withSourcesJar()
 }
 
 repositories {
@@ -47,7 +49,7 @@ repositories {
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.2.13")
+	implementation("com.github.nayasis:basica-kt:0.2.18")
 //	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT") { isChanging = true }
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -82,5 +84,13 @@ tasks.withType<KotlinCompile> {
 			"-Xjsr305=strict"
 		)
 		jvmTarget = "1.8"
+	}
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			from(components["java"])
+		}
 	}
 }

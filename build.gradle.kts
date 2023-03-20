@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	`maven`
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.allopen") version "1.6.10"
-	kotlin("plugin.noarg") version "1.6.10"
-	kotlin("plugin.serialization") version "1.6.10"
+	java
+	`maven-publish`
+	kotlin("jvm") version "1.8.10"
+	kotlin("plugin.allopen") version "1.8.10"
+	kotlin("plugin.noarg") version "1.8.10"
+	kotlin("plugin.serialization") version "1.8.10"
 }
 
 allOpen {
@@ -32,10 +33,11 @@ configurations.all {
 }
 
 java {
-	// for 'supportImplementation'
 	registerFeature("support") {
 		usingSourceSet(sourceSets["main"])
 	}
+	withJavadocJar()
+	withSourcesJar()
 }
 
 repositories {
@@ -47,11 +49,11 @@ repositories {
 
 dependencies {
 
-	implementation("com.github.nayasis:basica-kt:0.2.13")
+	implementation("com.github.nayasis:basica-kt:0.2.18")
 //	implementation("com.github.nayasis:basica-kt:develop-SNAPSHOT") { isChanging = true }
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("io.github.microutils:kotlin-logging:1.8.3")
+	implementation("io.github.microutils:kotlin-logging:3.0.5")
 	implementation("au.com.console:kassava:2.1.0")
 	implementation("javax.servlet:javax.servlet-api:4.0.1")
 	implementation("org.apache.commons:commons-text:1.8")
@@ -64,7 +66,7 @@ dependencies {
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-cache:2.5.6")
 	"supportImplementation"("org.springframework.data:spring-data-redis:2.5.6")
 	"supportImplementation"("org.springframework.boot:spring-boot-starter-test:2.5.6")
-	"supportImplementation"("ch.qos.logback:logback-classic:1.2.3")
+	"supportImplementation"("ch.qos.logback:logback-classic:1.3.5")
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")
@@ -82,5 +84,13 @@ tasks.withType<KotlinCompile> {
 			"-Xjsr305=strict"
 		)
 		jvmTarget = "1.8"
+	}
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			from(components["java"])
+		}
 	}
 }

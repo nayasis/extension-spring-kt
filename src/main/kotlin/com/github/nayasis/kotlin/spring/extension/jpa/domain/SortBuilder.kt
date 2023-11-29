@@ -1,6 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.domain
 
-import com.github.nayasis.kotlin.basica.core.extention.then
+import com.github.nayasis.kotlin.basica.core.extension.then
 import com.github.nayasis.kotlin.basica.core.validator.nvl
 import org.springframework.data.domain.Sort
 import kotlin.reflect.KClass

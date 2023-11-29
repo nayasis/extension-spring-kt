@@ -74,21 +74,6 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-//tasks.withType<GenerateMavenPom>().all {
-//	doLast {
-//		val file = File("$buildDir/publications/maven/pom-default.xml")
-//		var text = file.readText()
-//		val regex = "(?s)(<dependencyManagement>.+?<dependencies>)(.+?)(</dependencies>.+?</dependencyManagement>)".toRegex()
-//		val matcher = regex.find(text)
-//		if (matcher != null) {
-//			text = regex.replaceFirst(text, "")
-//			val firstDeps = matcher.groups[2]!!.value
-//			text = regex.replaceFirst(text, "$1$2$firstDeps$3")
-//		}
-//		file.writeText(text)
-//	}
-//}
-
 publishing {
 	publications {
 		create<MavenPublication>("maven") {

@@ -1,6 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.config.message
 
-import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extension.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extension.ifNotEmpty
 import com.github.nayasis.kotlin.basica.core.string.bind
 import com.github.nayasis.kotlin.basica.model.Messages
 import org.springframework.context.MessageSource
@@ -13,7 +14,7 @@ open class CustomMessageSource: MessageSource {
     private val EMPTY_ARG = arrayOf<Any>()
 
     override fun getMessage(code: String, args: Array<Any>?, defaultMessage: String?, locale: Locale): String {
-        return Messages[locale, code].bind(*args.ifEmpty{EMPTY_ARG})
+        return Messages[locale, code].bind(*args.ifEmpty {EMPTY_ARG})
     }
 
     override fun getMessage(code: String, args: Array<Any>?, locale: Locale): String {
@@ -22,7 +23,7 @@ open class CustomMessageSource: MessageSource {
 
     override fun getMessage(resolvable: MessageSourceResolvable, locale: Locale): String {
         val codes = resolvable.codes
-        val args  = resolvable.arguments.ifEmpty{EMPTY_ARG}
+        val args  = resolvable.arguments.ifNotEmpty {EMPTY_ARG}!!
         return Messages[locale, codes!![0]].bind(*args)
     }
 

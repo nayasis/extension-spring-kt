@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.addDeserializer
 import com.fasterxml.jackson.module.kotlin.addSerializer
@@ -42,7 +43,14 @@ class ObjectMapperBuilder {
             .visibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .modules(
-                KotlinModule(),
+                KotlinModule.Builder()
+                    .withReflectionCacheSize(512)
+                    .configure(KotlinFeature.NullToEmptyCollection, false)
+                    .configure(KotlinFeature.NullToEmptyMap, false)
+                    .configure(KotlinFeature.NullIsSameAsDefault, false)
+                    .configure(KotlinFeature.SingletonSupport, false)
+                    .configure(KotlinFeature.StrictNullChecks, false)
+                    .build(),
                 JavaTimeModule(),
                 SimpleModule(javaClass.simpleName).apply {
                     addSerializer(Date::class, DateSerializer())

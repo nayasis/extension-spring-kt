@@ -1,6 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.config.error
 
-import com.github.nayasis.kotlin.basica.core.extention.ifNotEmpty
+import com.github.nayasis.kotlin.basica.core.extension.ifNotEmpty
 import com.github.nayasis.kotlin.spring.extension.exception.DomainException
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -34,8 +34,8 @@ class ErrorHandler (
                     if (options.isIncluded(STACK_TRACE)) attributes["trace"]     = throwables.toString(throwable)
                     attributes["message"] = throwable.message ?: throwable.toString()
                     if( throwable is DomainException ) {
-                        throwable.code?.ifNotEmpty { attributes["code"] = it }
-                        throwable.detail?.ifNotEmpty { attributes["detail"] = it }
+                        throwable.code.ifNotEmpty { attributes["code"] = it }
+                        throwable.detail.ifNotEmpty { attributes["detail"] = it }
                     }
                 }
                 return attributes

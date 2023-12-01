@@ -1,8 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
-import com.github.nayasis.kotlin.basica.core.extention.ifEmpty
-import com.github.nayasis.kotlin.basica.core.extention.ifNull
-import com.github.nayasis.kotlin.basica.core.extention.isEmpty
+import com.github.nayasis.kotlin.basica.core.extension.ifEmpty
+import com.github.nayasis.kotlin.basica.core.extension.isEmpty
 import com.github.nayasis.kotlin.basica.core.validator.nvl
 import com.github.nayasis.kotlin.basica.thread.ThreadRoot
 import org.springframework.beans.BeansException

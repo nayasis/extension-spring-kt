@@ -80,6 +80,10 @@ tasks.withType<BootJar> {
 	enabled = false
 }
 
+tasks.withType<Jar> {
+	enabled = true
+}
+
 publishing {
 	publications {
 		create<MavenPublication>("maven") {

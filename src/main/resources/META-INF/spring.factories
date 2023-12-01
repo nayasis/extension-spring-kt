@@ -3,5 +3,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.github.nayasis.kotlin.spring.extension.servlet.HttpContext,\
   com.github.nayasis.kotlin.spring.extension.servlet.Cookies,\
-  com.github.nayasis.kotlin.spring.extension.config.error.Throwables,\
-  com.github.nayasis.kotlin.spring.extension.component.EmbeddedRedis
+  com.github.nayasis.kotlin.spring.extension.config.error.Throwables

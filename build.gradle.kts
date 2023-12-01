@@ -76,12 +76,13 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<BootJar> {
-	enabled = false
+tasks.getByName<Jar>("jar") {
+	enabled = true
+	archiveClassifier.set("")
 }
 
-tasks.withType<Jar> {
-	enabled = true
+tasks.withType<BootJar> {
+	enabled = false
 }
 
 publishing {

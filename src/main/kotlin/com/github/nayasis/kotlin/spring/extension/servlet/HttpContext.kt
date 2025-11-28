@@ -1,9 +1,9 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
-import com.github.nayasis.kotlin.basica.core.extension.ifEmpty
-import com.github.nayasis.kotlin.basica.core.extension.isEmpty
-import com.github.nayasis.kotlin.basica.core.validator.nvl
-import com.github.nayasis.kotlin.basica.thread.ThreadRoot
+import io.github.nayasis.kotlin.basica.core.extension.ifEmpty
+import io.github.nayasis.kotlin.basica.core.extension.isEmpty
+import io.github.nayasis.kotlin.basica.core.validator.nvl
+import io.github.nayasis.kotlin.basica.thread.ThreadRoot
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -20,17 +20,14 @@ import java.net.NetworkInterface
 import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.*
-import javax.servlet.http.Cookie
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.http.HttpSession
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpSession
 import kotlin.reflect.KClass
 
-@Suppress("UNCHECKED_CAST","MemberVisibilityCanBePrivate")
-@Component("httpctx")
-class HttpContext: ApplicationContextAware {
+open class HttpContext: ApplicationContextAware {
 
-    @Throws(BeansException::class)
     override fun setApplicationContext(applicationContext: ApplicationContext) {
         context = applicationContext
     }

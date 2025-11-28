@@ -1,10 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
-import org.springframework.stereotype.Component
-import javax.servlet.http.Cookie
+import jakarta.servlet.http.Cookie
 
-@Suppress("MemberVisibilityCanBePrivate")
-@Component("cookies")
 class Cookies {
 
     val all: Map<String,Cookie>

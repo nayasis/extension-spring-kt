@@ -1,6 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.domain
 
-import com.github.nayasis.kotlin.basica.core.extension.ifEmpty
+import io.github.nayasis.kotlin.basica.core.extension.ifEmpty
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -16,7 +16,7 @@ open class BasePageParam(
 
     fun toPageable(defaultSort: String, entity: KClass<*>): Pageable {
         val expression = sort.ifEmpty { defaultSort }
-        val sortable   = if(expression.isNullOrEmpty()) Sort.unsorted() else
+        val sortable   = if(expression.isEmpty()) Sort.unsorted() else
             SortBuilder().toSort(expression,entity)
         return PageRequest.of(page, size, sortable)
     }

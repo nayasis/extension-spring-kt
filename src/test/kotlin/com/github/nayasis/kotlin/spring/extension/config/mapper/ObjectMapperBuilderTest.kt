@@ -2,8 +2,8 @@ package com.github.nayasis.kotlin.spring.extension.config.mapper
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.github.nayasis.kotlin.basica.core.localdate.toLocalDateTime
-import com.github.nayasis.kotlin.basica.reflection.Reflector
+import io.github.nayasis.kotlin.basica.core.localdate.toLocalDateTime
+import io.github.nayasis.kotlin.basica.reflection.Reflector
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime

@@ -1,7 +1,6 @@
 package com.github.nayasis.kotlin.spring.extension.cache
 
-import com.github.nayasis.kotlin.basica.core.validator.isEmpty
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.dao.PessimisticLockingFailureException
 import org.springframework.data.redis.cache.CacheStatistics
 import org.springframework.data.redis.cache.CacheStatisticsCollector
@@ -16,6 +15,7 @@ import org.springframework.lang.Nullable
 import java.lang.Thread.sleep
 import java.nio.charset.StandardCharsets
 import java.time.Duration
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.function.Function
@@ -106,8 +106,20 @@ class RedisCacheWriterForClearAll @JvmOverloads constructor(
     override fun withStatisticsCollector(cacheStatisticsCollector: CacheStatisticsCollector): RedisCacheWriter =
         RedisCacheWriterForClearAll(connectionFactory,sleepTime,cacheStatisticsCollector)
 
+    override fun retrieve(name: String, key: ByteArray, ttl: Duration?): CompletableFuture<ByteArray> {
+        return CompletableFuture.supplyAsync {
+            get(name, key) ?: throw IllegalStateException("Value not found")
+        }
+    }
+
+    override fun store(name: String, key: ByteArray, value: ByteArray, ttl: Duration?): CompletableFuture<Void> {
+        return CompletableFuture.runAsync {
+            put(name, key, value, ttl)
+        }
+    }
+
     private fun clean(keys: MutableSet<ByteArray?>, connection: RedisConnection) {
-        if (isEmpty(keys)) return
+        if (keys.isEmpty()) return
         try {
             connection.del(*keys.toTypedArray())
             keys.clear()

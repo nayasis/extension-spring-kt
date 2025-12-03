@@ -8,18 +8,22 @@ import java.util.*
 
 open class CustomMessageSource: MessageSource {
 
-    override fun getMessage(code: String, args: Array<Any>?, defaultMessage: String?, locale: Locale): String {
-        return Messages[locale, code].bind(*args ?: emptyArray() )
+    override fun getMessage(code: String, args: Array<out Any>?, defaultMessage: String?, locale: Locale?): String? {
+        return Messages[locale, code].bind(*(args ?: emptyArray()))
     }
 
-    override fun getMessage(code: String, args: Array<Any>?, locale: Locale): String {
-        return getMessage(code, args, null, locale)
+    override fun getMessage(code: String, args: Array<out Any>?, locale: Locale?): String {
+        return getMessage(code, args, null, locale) ?: code
     }
 
-    override fun getMessage(resolvable: MessageSourceResolvable, locale: Locale): String {
+    override fun getMessage(resolvable: MessageSourceResolvable, locale: Locale?): String {
         val codes = resolvable.codes
         val args  = resolvable.arguments ?: emptyArray()
-        return Messages[locale, codes!![0]].bind(*args)
+        return if (codes != null && codes.isNotEmpty()) {
+            Messages[locale, codes[0]].bind(*(args))
+        } else {
+            resolvable.defaultMessage ?: ""
+        }
     }
 
 }

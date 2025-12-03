@@ -4,7 +4,10 @@ import io.github.nayasis.kotlin.basica.core.extension.ifEmpty
 import io.github.nayasis.kotlin.basica.core.extension.isEmpty
 import io.github.nayasis.kotlin.basica.core.validator.nvl
 import io.github.nayasis.kotlin.basica.thread.ThreadRoot
-import org.springframework.beans.BeansException
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpSession
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.core.env.Environment
@@ -19,13 +22,9 @@ import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets.UTF_8
-import java.util.*
-import jakarta.servlet.http.Cookie
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
-import jakarta.servlet.http.HttpSession
 import kotlin.reflect.KClass
 
+@Component("httpctx")
 open class HttpContext: ApplicationContextAware {
 
     override fun setApplicationContext(applicationContext: ApplicationContext) {
@@ -124,6 +123,7 @@ open class HttpContext: ApplicationContextAware {
          * @param <T> return type of bean
          * @return Spring bean
         </T> */
+        @Suppress("UNCHECKED_CAST")
         fun <T> bean(byName: String, vararg arg: String): T {
             return when {
                 arg.isEmpty() -> context.getBean(byName)
@@ -160,10 +160,11 @@ open class HttpContext: ApplicationContextAware {
          * check if given profile exists in active profiles.
          *
          * @param profile profile
+         * @param ignoreCase ignoreCase
          * @return true if given profile exists
          */
-        fun hasProfile(profile: String): Boolean
-            = activeProfile.contains(profile)
+        fun hasProfile(profile: String, ignoreCase: Boolean = true): Boolean
+            = activeProfile.contains(profile, ignoreCase = ignoreCase)
 
         /**
          * transaction ID based on UUID.

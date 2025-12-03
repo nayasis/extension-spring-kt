@@ -38,28 +38,32 @@ class RedisCacheWriterForClearAll @JvmOverloads constructor(
     override fun put(name: String, key: ByteArray, value: ByteArray, @Nullable ttl: Duration?) {
         execute(name) { connection ->
             if (shouldExpireWithin(ttl)) {
-                connection[key, value, Expiration.from(ttl!!.toMillis(), TimeUnit.MILLISECONDS)] =
+                connection.stringCommands().set(
+                    key, 
+                    value, 
+                    Expiration.from(ttl!!.toMillis(), TimeUnit.MILLISECONDS),
                     RedisStringCommands.SetOption.upsert()
+                )
             } else {
-                connection[key] = value
+                connection.stringCommands().set(key, value)
             }
             "OK"
         }
     }
 
     override fun get(name: String, key: ByteArray): ByteArray? =
-        execute(name) { connection -> connection[key] }
+        execute(name) { connection -> connection.stringCommands().get(key) }
 
     override fun putIfAbsent(name: String, key: ByteArray, value: ByteArray, @Nullable ttl: Duration?): ByteArray? {
         return execute(name) { connection ->
             if (isLockingCacheWriter) lock(name, connection)
             try {
-                if (connection.setNX(key, value) == true) {
+                if (connection.stringCommands().setNX(key, value) == true) {
                     if (shouldExpireWithin(ttl))
-                        connection.pExpire(key, ttl!!.toMillis())
+                        connection.keyCommands().pExpire(key, ttl!!.toMillis())
                     return@execute null
                 }
-                return@execute connection[key]
+                return@execute connection.stringCommands().get(key)
             } finally {
                 if (isLockingCacheWriter)
                     unlock(name, connection)
@@ -68,7 +72,7 @@ class RedisCacheWriterForClearAll @JvmOverloads constructor(
     }
 
     override fun remove(name: String, key: ByteArray) {
-        execute(name) { connection -> connection.del(key) }
+        execute(name) { connection -> connection.keyCommands().del(key) }
     }
 
     override fun clean(name: String, pattern: ByteArray) {
@@ -82,7 +86,7 @@ class RedisCacheWriterForClearAll @JvmOverloads constructor(
             val keys = HashSet<ByteArray?>()
             try {
                 val condition = ScanOptions.scanOptions().count(1000L).match(String(pattern)).build()
-                val cursor: Cursor<*> = connection.scan(condition)
+                val cursor: Cursor<*> = connection.keyCommands().scan(condition)
                 while (cursor.hasNext()) {
                     val value = cursor.next() as ByteArray
                     if (value.isNotEmpty()) {
@@ -121,21 +125,21 @@ class RedisCacheWriterForClearAll @JvmOverloads constructor(
     private fun clean(keys: MutableSet<ByteArray?>, connection: RedisConnection) {
         if (keys.isEmpty()) return
         try {
-            connection.del(*keys.toTypedArray())
+            connection.keyCommands().del(*keys.toTypedArray())
             keys.clear()
         } catch (e: Exception) {
-            log.error(e.message, e)
+            log.error(e) { e.message ?: "" }
         }
     }
 
     private fun lock(name: String, connection: RedisConnection): Boolean =
-        connection.setNX(getLockKey(name), ByteArray(0)) == true
+        connection.stringCommands().setNX(getLockKey(name), ByteArray(0)) == true
 
     private fun unlock(name: String, connection: RedisConnection): Long? =
-        connection.del(getLockKey(name))
+        connection.keyCommands().del(getLockKey(name))
 
     private fun isLocked(name: String, connection: RedisConnection): Boolean =
-        connection.exists(getLockKey(name)) == true
+        connection.keyCommands().exists(getLockKey(name)) == true
 
     private val isLockingCacheWriter: Boolean
         get() = !sleepTime.isZero && !sleepTime.isNegative

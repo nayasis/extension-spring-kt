@@ -4,35 +4,27 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	kotlin("jvm") version "2.2.0"
-	id("org.springframework.boot") version "3.5.6"
-	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("plugin.spring") version "2.2.10"
 	kotlin("kapt") version "2.2.10"
+	id("org.springframework.boot") version "3.5.6"
+	id("io.spring.dependency-management") version "1.1.7"
 	java
 	signing
 	id("com.vanniktech.maven.publish") version "0.31.0"
-
-
 }
 
-group = "com.github.nayasis"
-version = when {
-	project.hasProperty("mavenReleaseVersion") && project.property("mavenReleaseVersion") != "unspecified" && project.property("mavenReleaseVersion") != "" -> {
+group       = "io.github.nayasis"
+description = "SpringBoot utility for Kotlin"
+version     = when {
+	project.hasProperty("mavenReleaseVersion") && project.property("mavenReleaseVersion").let { it != "" && it != "unspecified" } -> {
 		project.property("mavenReleaseVersion") as String
 	}
 	else -> "0.1.0-SNAPSHOT"
 }
-description = "SpringBoot utility for Kotlin"
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
-
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
 	}
 }
 
@@ -52,25 +44,30 @@ dependencies {
 	kapt("org.springframework.boot:spring-boot-autoconfigure-processor")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-	implementation("org.springframework.boot:spring-boot-autoconfigure")
-	implementation("org.springframework:spring-web")
-	implementation("org.springframework:spring-webmvc")
-	implementation("org.springframework:spring-test")
-	implementation("org.springframework.data:spring-data-redis")
-	implementation("org.springframework.data:spring-data-jpa")
-	implementation("jakarta.persistence:jakarta.persistence-api")
-	implementation("org.hibernate.orm:hibernate-core")
+	compileOnly("org.springframework.boot:spring-boot-autoconfigure")
+	compileOnly("org.springframework:spring-web")
+	compileOnly("org.springframework:spring-webmvc")
+	compileOnly("org.springframework:spring-test")
+	compileOnly("org.springframework.data:spring-data-redis")
+	compileOnly("org.springframework.data:spring-data-jpa")
+	compileOnly("jakarta.persistence:jakarta.persistence-api")
+	compileOnly("org.hibernate.orm:hibernate-core")
+	compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
 
-	implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
-	implementation("org.apache.commons:commons-text:1.10.0")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.+")
-	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.2")
+	implementation("org.apache.commons:commons-text:1.14.0") {
+		exclude(group = "org.apache.commons", module = "commons-lang3")
+	}
+	implementation("org.apache.commons:commons-lang3:3.18.0")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
-	testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-	testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
-	testImplementation("io.kotest:kotest-assertions-core:5.6.2")
-	testImplementation("ch.qos.logback:logback-classic:1.5.19")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "ch.qos.logback", module = "logback-core")
+	}
+	testImplementation("ch.qos.logback:logback-core:1.5.19")
+	testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+	testImplementation("io.kotest:kotest-assertions-core:5.9.1")
+	testImplementation("org.springframework:spring-web")
 
 }
 
@@ -98,16 +95,14 @@ tasks.withType<BootJar> {
 }
 
 mavenPublishing {
-	if (!gradle.startParameter.taskNames.any {
-			it.contains("publishToMavenLocal") || it.contains("publishMavenPublicationToMavenLocal")
-		}) {
+	if(listOf("publishToMavenLocal","publishMavenPublicationToMavenLocal").none{gradle.startParameter.taskNames.contains(it)}) {
 		signAllPublications()
 	}
 	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 	pom {
 		name        = project.name
 		description = "SpringBoot utility library providing common functionality on Kotlin"
-		url         = "https://github.com/nayasis/basica-kt"
+		url         = "https://github.com/nayasis/extension-spring-kt"
 		licenses {
 			license {
 				name = "Apache License, Version 2.0"

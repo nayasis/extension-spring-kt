@@ -40,8 +40,8 @@ open class GlobalErrorHandler(
     ): ResponseEntity<Map<String, Any>> {
 
         val error = if(filter != null) {
-            filter(throwable).also {
-                request.setAttribute(ERROR_INTERNAL_ATTRIBUTE, it, RequestAttributes.SCOPE_REQUEST)
+            filter(throwable).also { filtered ->
+                request.setAttribute(ERROR_INTERNAL_ATTRIBUTE, filtered, RequestAttributes.SCOPE_REQUEST)
             }
         } else throwable
 

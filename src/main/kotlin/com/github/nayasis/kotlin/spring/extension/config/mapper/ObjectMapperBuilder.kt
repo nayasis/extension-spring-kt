@@ -25,7 +25,7 @@ import java.util.*
 class ObjectMapperBuilder {
 
     @JvmOverloads
-    fun fieldMapper(removeXss: Boolean = false, includeNotNull: Boolean = true): ObjectMapper {
+    fun build(removeXss: Boolean = false, includeNotNull: Boolean = true): ObjectMapper {
         return buildFieldMapper().apply {
             if(includeNotNull)
                 setSerializationInclusion(JsonInclude.Include.NON_NULL)

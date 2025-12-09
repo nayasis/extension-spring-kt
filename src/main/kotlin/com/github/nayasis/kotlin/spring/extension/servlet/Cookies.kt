@@ -1,9 +1,13 @@
 package com.github.nayasis.kotlin.spring.extension.servlet
 
 import jakarta.servlet.http.Cookie
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.stereotype.Component
 
+
+
 @Component("cookies")
+@ConditionalOnExpression($$"'${server.cookies.enabled:true}' == 'true'")
 class Cookies {
 
     val all: Map<String,Cookie>

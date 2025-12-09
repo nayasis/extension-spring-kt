@@ -3,12 +3,14 @@ package com.github.nayasis.kotlin.spring.extension.config.filter
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.CommonsRequestLoggingFilter
 
 private val log = KotlinLogging.logger{}
 
 @Component
+@ConditionalOnExpression($$"'${logging.request.enabled:true}' == 'true'")
 class RequestLoggingFilter(
     @Value($$"${logging.request.include-client-info:true}")
     includeClientInfo: Boolean,

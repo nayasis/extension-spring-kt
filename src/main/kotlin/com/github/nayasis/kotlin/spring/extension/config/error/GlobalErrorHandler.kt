@@ -1,6 +1,7 @@
 package com.github.nayasis.kotlin.spring.extension.config.error
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.web.ErrorProperties.IncludeAttribute
 import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -18,7 +19,8 @@ import org.springframework.web.context.request.WebRequest
 private val logger = KotlinLogging.logger {}
 
 @ControllerAdvice
-open class GlobalErrorHandler(
+@ConditionalOnExpression($$"'${server.error.global.enabled:true}' == 'true'")
+class GlobalErrorHandler(
     private val serverProperties: ServerProperties,
 ): ApplicationContextAware {
 

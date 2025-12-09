@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.core.env.Environment
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 import kotlin.reflect.KClass
 
 @Component("httpctx")
+@ConditionalOnExpression($$"'${server.httpctx.enabled:true}' == 'true'")
 open class HttpContext: ApplicationContextAware {
 
     override fun setApplicationContext(applicationContext: ApplicationContext) {

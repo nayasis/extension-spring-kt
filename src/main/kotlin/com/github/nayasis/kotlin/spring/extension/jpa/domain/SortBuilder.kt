@@ -1,13 +1,12 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.domain
 
-import com.github.nayasis.kotlin.basica.core.extension.then
-import com.github.nayasis.kotlin.basica.core.validator.nvl
+import io.github.nayasis.kotlin.basica.core.extension.then
+import io.github.nayasis.kotlin.basica.core.validator.nvl
 import org.springframework.data.domain.Sort
 import kotlin.reflect.KClass
 
 private val cache = mutableMapOf<KClass<*>,Set<String>>()
 
-@Suppress("MemberVisibilityCanBePrivate")
 class SortBuilder {
 
     /**
@@ -29,8 +28,7 @@ class SortBuilder {
      *
      * @param expression sort expression
      *  ex. name,asc ^ id,desc
-     * @param columnMapper column name mapper
-     *  ex. { field -> COLUMNS.get(field) }
+     * @param entity JPA entity class
      * @return query sorting expression
      */
     fun toSort(expression: String?, entity: KClass<*>): Sort {
@@ -56,8 +54,7 @@ class SortBuilder {
      *
      * @param expression order expressions
      *  ex. name,asc ^ id,desc
-     * @param columnMapper column name mapper
-     *  ex. { field -> COLUMNS.get(field) }
+     * @param entity JPA entity class
      * @return order rules
      */
     fun toOrders(expression: String?, entity: KClass<*>): List<Sort.Order> {
@@ -81,7 +78,7 @@ class SortBuilder {
         val field     = words.first().trim().also { if(it.isEmpty()) return null }
         val column    = if( columnMapper == null ) field else columnMapper(field) ?: return null
         val direction = toDirection(words.getOrNull(1))
-        return if (column.isNullOrEmpty()) null else Sort.Order(direction, column)
+        return if (column.isEmpty()) null else Sort.Order(direction, column)
     }
 
     /**
@@ -91,8 +88,7 @@ class SortBuilder {
      *  ex1. colA,desc
      *  ex2. colA,asc
      *  ex3. colA
-     * @param columnMapper column name mapper
-     *  ex. { field -> COLUMNS.get(field) }
+     * @param entity JPA entity class
      * @return order
      */
     fun toOrder(expression: String?, entity: KClass<*>): Sort.Order? {

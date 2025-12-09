@@ -1,8 +1,8 @@
 package com.github.nayasis.kotlin.spring.extension.jpa.converter
 
-import com.github.nayasis.kotlin.basica.reflection.Reflector
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
+import io.github.nayasis.kotlin.basica.reflection.Reflector
+import jakarta.persistence.AttributeConverter
+import jakarta.persistence.Converter
 
 @Converter(autoApply = true)
 class ListConverter<T>: AttributeConverter<List<T>,String?> {

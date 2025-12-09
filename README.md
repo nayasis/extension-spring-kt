@@ -268,13 +268,13 @@ Enhanced Redis cache writer with improved `clear()` operation.
 
 All components are automatically configured when the library is included. Components can be disabled via configuration properties:
 
-| Property | Description |
-|----------|-------------|
-| `server.error.global.enabled=false` | Disable global error handler |
-| `logging.request.enabled=false` | Disable request logging filter |
-| `spring.messages.path` (empty) | Disable custom message source |
-| `server.httpctx.enabled=false` | Disable HttpContext |
-| `server.cookies.enabled=false` | Disable Cookies utility |
+| Property                            | Description                    |
+|-------------------------------------|--------------------------------|
+| `server.error.global.enabled=false` | Disable global error handler   |
+| `logging.request.enabled=false`     | Disable request logging filter |
+| `spring.messages.path` (empty)      | Disable custom message source  |
+| `server.httpctx.enabled=false`      | Disable HttpContext            |
+| `server.cookies.enabled=false`      | Disable Cookies utility        |
 
 ## Dependencies
 
@@ -283,7 +283,7 @@ All components are automatically configured when the library is included. Compon
 - basica-kt 0.3.9+
 - Jackson (for JSON processing)
 - Spring Data JPA (optional, for JPA utilities)
-- Spring Data Redis (optional, for Redis cache writer)
+- Spring Data Redis (optional, for a Redis cache writer)
 
 ## License
 

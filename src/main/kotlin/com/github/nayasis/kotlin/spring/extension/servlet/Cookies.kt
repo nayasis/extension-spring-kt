@@ -4,8 +4,7 @@ import jakarta.servlet.http.Cookie
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.stereotype.Component
 
-
-
+@Suppress("unused")
 @Component("cookies")
 @ConditionalOnExpression($$"'${server.cookies.enabled:true}' == 'true'")
 class Cookies {

@@ -50,7 +50,7 @@ class GlobalErrorHandler(
         logger.error(error) { error.message ?: "Internal Server Error" }
 
         val attributes = toErrorAttributes(request)
-        val status     = attributes.get("status") as Int
+        val status     = attributes["status"] as Int
 
         return ResponseEntity.status(status).body(attributes)
     }

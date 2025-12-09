@@ -25,9 +25,10 @@ import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets.UTF_8
 import kotlin.reflect.KClass
 
+@Suppress("unused")
 @Component("httpctx")
 @ConditionalOnExpression($$"'${server.httpctx.enabled:true}' == 'true'")
-open class HttpContext: ApplicationContextAware {
+class HttpContext: ApplicationContextAware {
 
     override fun setApplicationContext(applicationContext: ApplicationContext) {
         context = applicationContext
@@ -175,7 +176,7 @@ open class HttpContext: ApplicationContextAware {
             get() = ThreadRoot.key
 
         /**
-         * IP of remote client
+         * IP of a remote client
          */
         val remoteAddress: String
             get() = request.remoteAddr?.replace(":", ".") ?: ""

@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.config.filter
+package io.github.nayasis.kotlin.spring.extension.config.filter
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest

@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.config.message
+package io.github.nayasis.kotlin.spring.extension.config.message
 
 import io.github.nayasis.kotlin.basica.core.string.bind
 import io.github.nayasis.kotlin.basica.etc.error

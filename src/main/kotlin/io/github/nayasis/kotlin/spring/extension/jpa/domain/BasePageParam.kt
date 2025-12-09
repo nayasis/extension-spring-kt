@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.jpa.domain
+package io.github.nayasis.kotlin.spring.extension.jpa.domain
 
 import io.github.nayasis.kotlin.basica.core.extension.ifEmpty
 import org.springframework.data.domain.PageRequest

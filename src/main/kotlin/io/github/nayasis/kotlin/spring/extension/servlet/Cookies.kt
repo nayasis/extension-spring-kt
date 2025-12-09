@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.servlet
+package io.github.nayasis.kotlin.spring.extension.servlet
 
 import jakarta.servlet.http.Cookie
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression

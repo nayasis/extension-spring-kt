@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.cache
+package io.github.nayasis.kotlin.spring.extension.cache
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.Cache

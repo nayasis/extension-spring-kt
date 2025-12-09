@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.servlet
+package io.github.nayasis.kotlin.spring.extension.servlet
 
 import io.github.nayasis.kotlin.basica.core.extension.ifEmpty
 import io.github.nayasis.kotlin.basica.core.extension.isEmpty

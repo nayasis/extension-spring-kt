@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.cache
+package io.github.nayasis.kotlin.spring.extension.cache
 
 class SimpleKey(vararg elements: Any?) {
 

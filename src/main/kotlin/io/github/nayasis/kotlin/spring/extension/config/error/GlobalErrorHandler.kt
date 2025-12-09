@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.config.error
+package io.github.nayasis.kotlin.spring.extension.config.error
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression

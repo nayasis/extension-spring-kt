@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.cache
+package io.github.nayasis.kotlin.spring.extension.cache
 
 import org.springframework.cache.interceptor.KeyGenerator
 import java.lang.reflect.Method

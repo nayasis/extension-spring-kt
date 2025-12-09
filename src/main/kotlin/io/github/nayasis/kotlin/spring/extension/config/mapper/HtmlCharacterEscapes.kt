@@ -1,4 +1,4 @@
-package com.github.nayasis.kotlin.spring.extension.config.mapper
+package io.github.nayasis.kotlin.spring.extension.config.mapper
 
 import com.fasterxml.jackson.core.SerializableString
 import com.fasterxml.jackson.core.io.CharacterEscapes

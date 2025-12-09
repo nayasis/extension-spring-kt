@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
@@ -15,9 +16,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.addDeserializer
 import com.fasterxml.jackson.module.kotlin.addSerializer
-import com.github.nayasis.kotlin.basica.core.localdate.toLocalDateTime
-import com.github.nayasis.kotlin.basica.reflection.serializer.DateDeserializer
-import com.github.nayasis.kotlin.basica.reflection.serializer.DateSerializer
+import io.github.nayasis.kotlin.basica.core.localdate.toLocalDateTime
+import io.github.nayasis.kotlin.basica.reflection.serializer.DateSerializer
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import java.time.LocalDateTime
 import java.util.*
@@ -25,7 +25,7 @@ import java.util.*
 class ObjectMapperBuilder {
 
     @JvmOverloads
-    fun fieldMapper(removeXss: Boolean = false, includeNotNull: Boolean = true): ObjectMapper {
+    fun build(removeXss: Boolean = false, includeNotNull: Boolean = true): ObjectMapper {
         return buildFieldMapper().apply {
             if(includeNotNull)
                 setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -54,7 +54,7 @@ class ObjectMapperBuilder {
                 JavaTimeModule(),
                 SimpleModule(javaClass.simpleName).apply {
                     addSerializer(Date::class, DateSerializer())
-                    addDeserializer(Date::class, DateDeserializer())
+                    addDeserializer(Date::class, DateDeserializers.DateDeserializer())
                     addDeserializer(LocalDateTime::class,CustomLocalDateTimeDeserializer())
                 })
             .build()

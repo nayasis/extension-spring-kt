@@ -1,6 +1,6 @@
 io.github.nayasis.kotlin.spring.extension.servlet.HttpContext
 io.github.nayasis.kotlin.spring.extension.servlet.Cookies
-io.github.nayasis.kotlin.spring.extension.config.error.GlobalErrorHandler
+io.github.nayasis.kotlin.spring.extension.config.error.GlobalErrorLogger
 io.github.nayasis.kotlin.spring.extension.config.filter.RequestLoggingFilter
 io.github.nayasis.kotlin.spring.extension.config.message.CustomMessageSource
 
